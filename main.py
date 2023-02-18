@@ -43,25 +43,28 @@ def find_mismatch(text):
         if next in "([{":
             # Process opening bracket, write your code here
             opening_brackets_stack.append(next) #ievietoju atvērto iekavu šeit (cerams)
-            
-            pass
 
         if next in ")]}":
             # Process closing bracket, write your code here
             stacksize = len(opening_brackets_stack) #iegūst steka garumu
-            for j in reversed(opening_brackets_stack):
+            for j in reversed(opening_brackets_stack): #šobrīd kļūda šeit, typeError: must be int or slice, not str
                 active = opening_brackets_stack[j]
                 if next == active:
                     opening_brackets_stack.pop(j)
                     break
     if len(opening_brackets_stack) == 0:
-        print("Success")
+        global borat 
+        borat = True
+        
 
 
 def main():
     print("Input text (preferably with brackets): ")
     text = input()
     mismatch = find_mismatch(text)
+    if borat == True:
+        print("Success")
+
     # Printing answer, write your code here
 
 
