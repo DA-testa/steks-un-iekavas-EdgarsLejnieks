@@ -42,7 +42,7 @@ def find_mismatch(text):
     opening_brackets_stack = [] #opening brackets are placed in a stack
     pairsdictionary = { 
         ")":"(",
-        "]":"(",        #dictionary that provides the asymmetrical opposite to each opening bracket
+        "]":"[",        #dictionary that provides the asymmetrical opposite to each opening bracket
         "}":"{"
     }
     global borat        #borat will tell us whether everything checks out
@@ -52,14 +52,18 @@ def find_mismatch(text):
         if next in "([{": # Process opening bracket
             opening_brackets_stack.append(next) #place opening bracket in stack
             
-            
+        
         if next in ")]}": # Process closing bracket  
+            cont = False
+            
             if next == ")":
                 for j, next in enumerate(reversed(opening_brackets_stack)): 
                     checkbracketfromstack = opening_brackets_stack[j]
                     if checkbracketfromstack == pairsdictionary[")"]:
                         opening_brackets_stack.pop(j)
+                        cont = True
                         break
+                if cont == False:
                     borat = False
                     return
                     
@@ -69,9 +73,12 @@ def find_mismatch(text):
                     checkbracketfromstack = opening_brackets_stack[j]
                     if checkbracketfromstack == pairsdictionary["]"]:
                         opening_brackets_stack.pop(j)
+                        cont = True
                         break
+                if cont == False:
                     borat = False
                     return
+
                     
 
             elif next == "}":
@@ -79,9 +86,12 @@ def find_mismatch(text):
                     checkbracketfromstack = opening_brackets_stack[j]
                     if checkbracketfromstack == pairsdictionary["}"]:
                         opening_brackets_stack.pop(j)
+                        cont = True
                         break
+                if cont == False:
                     borat = False
                     return
+                    
 
     if len(opening_brackets_stack) == 0: 
         borat = True
@@ -105,5 +115,5 @@ if __name__ == "__main__":
     main()
 
 #current bugs
+# ) <- success
 # ()) <- success
-# {) <- success
