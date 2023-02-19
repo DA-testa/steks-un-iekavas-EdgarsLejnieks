@@ -33,7 +33,7 @@ def find_mismatch(text):
                 stacklenght = len(opening_brackets_stack) - 1
                 if stacklenght < 0:
                     check = False
-                    #return index + 1
+                    return index + 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
                 if checkbracketfromstack[0] == pairsdictionary[")"]:
                         opening_brackets_stack.pop(stacklenght)
@@ -46,7 +46,7 @@ def find_mismatch(text):
                 stacklenght = len(opening_brackets_stack) - 1
                 if stacklenght < 0:
                     check = False
-                    #return index + 1
+                    return index + 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
                 if checkbracketfromstack[0] == pairsdictionary["]"]:
                         opening_brackets_stack.pop(stacklenght)
@@ -59,7 +59,7 @@ def find_mismatch(text):
                 stacklenght = len(opening_brackets_stack) - 1
                 if stacklenght < 0:
                     check = False
-                    #return index + 1
+                    return index + 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
                 if checkbracketfromstack[0] == pairsdictionary["}"]:
                         opening_brackets_stack.pop(stacklenght)
@@ -105,4 +105,4 @@ if __name__ == "__main__":
     main()
     
 # Unfinished: 
-#   Indexing
+#   Indexing (literal pain)
