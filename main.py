@@ -1,4 +1,5 @@
 # python3
+# 221RDB168 Edgars Lejnieks 7. grupa
 
 """
 First priority is to find the first unmatched closing bracket which either doesn’t 
@@ -26,34 +27,33 @@ The bracket [ corresponds to the bracket ], { corresponds to }, and ( correspond
 
 from collections import namedtuple
 
+'''
 Bracket = namedtuple("Bracket", ["char", "position"]) #kautkāds masīvs laikam
 
-'''
+
 def are_matching(left, right):
     return (left + right) in ["()", "[]", "{}"] 
 '''
-#man nav ne jausmas kas šis ir ^^^^^
-
-# 'pass' novērš tukšas funkcijas kļūdu vai kautkas tamlīdzīgs... ?
+#not used
 
 
 def find_mismatch(text):
-    opening_brackets_stack = [] #šeit pieņemu iet atvērtās iekavas
+    opening_brackets_stack = [] #opening brackets are placed here
+    global borat
+    borat = False
     for i, next in enumerate(text):
-        if next in "([{":
-            # Process opening bracket, write your code here
+        if next in "([{": # Process opening bracket
+            
             opening_brackets_stack.append(next) #ievietoju atvērto iekavu šeit (cerams)
 
-        if next in ")]}":
-            # Process closing bracket, write your code here
-            stacksize = len(opening_brackets_stack) #iegūst steka garumu
-            for j in reversed(opening_brackets_stack): #šobrīd kļūda šeit, typeError: must be int or slice, not str
+        if next in ")]}": # Process closing bracket
+            stacksize = len(opening_brackets_stack) #get stack size
+            for j, next in enumerate(reversed(opening_brackets_stack)): #bug fixed (wrong type of indices)
                 active = opening_brackets_stack[j]
                 if next == active:
                     opening_brackets_stack.pop(j)
                     break
-    if len(opening_brackets_stack) == 0:
-        global borat 
+    if len(opening_brackets_stack) == 0: 
         borat = True
         
 
@@ -62,11 +62,18 @@ def main():
     print("Input text (preferably with brackets): ")
     text = input()
     mismatch = find_mismatch(text)
+    # Printing answer ---------------------
     if borat == True:
         print("Success")
-
-    # Printing answer, write your code here
+    else:
+        print("uh oh")
+        
+    # TODO: make this return position of error
 
 
 if __name__ == "__main__":
     main()
+
+#current bugs
+# ()) <- success
+# {) <- success
