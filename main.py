@@ -61,9 +61,21 @@ def find_mismatch(text):
         check = True
 
 def main():
-    print("Input text (preferably with brackets): ")
-    text = input()
-    mismatch = find_mismatch(text)
+    print("Manual Input: I, File input: F ")
+    print("Select input type:")
+    inputtype = input()
+    if inputtype == "I":
+        print("Input text (preferably with brackets): ")
+        text = input()
+        find_mismatch(text)
+    elif inputtype == "F":
+        print("Input file (location, name and type): ")
+        filepath = input()
+        file = open(filepath, "r")
+        text = file.read()
+        find_mismatch(text)
+    
+    
     # Printing answer ---------------------
     if check == True:
         print("Success")
@@ -73,4 +85,5 @@ def main():
 if __name__ == "__main__":
     main()
     
-# Unfinished: Indexing
+# Unfinished: 
+#   Indexing
