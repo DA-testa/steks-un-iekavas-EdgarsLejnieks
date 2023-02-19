@@ -3,13 +3,15 @@
 
 from collections import namedtuple
 
+Bracket = namedtuple("Bracket", ["char", "position"]) #array, but cooler (actually a type apparently)
+
 def find_mismatch(text):
-    
+    global opening_brackets_stack
     opening_brackets_stack = [] #opening brackets are placed in a stack
     
     pairsdictionary = { 
         ")":"(",
-        "]":"[",        #dictionary that provides the asymmetrical opposite to each opening bracket
+        "]":"[",        #dictionary that provides the horizontal opposite to each opening bracket
         "}":"{"
     }
     
@@ -17,11 +19,11 @@ def find_mismatch(text):
     global check        #check will tell us whether brackets are matched
     check = False
     
-    global index        #index will tell us which bracket is unopened or unmatched(not closed)
+    global index        #index will tell us positions and stuff
     for index, next in enumerate(text):
         
         if next in "([{": # Process opening bracket
-            opening_brackets_stack.append(next) #place opening bracket in stack
+            opening_brackets_stack.append(Bracket(next, index)) #place opening bracket in stack
             
         
         if next in ")]}": # Process closing bracket  
@@ -29,48 +31,78 @@ def find_mismatch(text):
             
             if next == ")":
                 stacklenght = len(opening_brackets_stack) - 1
+                if stacklenght < 0:
+                    check = False
+                    return index + 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
-                if checkbracketfromstack == pairsdictionary[")"]:
+                if checkbracketfromstack[0] == pairsdictionary[")"]:
                         opening_brackets_stack.pop(stacklenght)
                         cont = True
                 if cont == False:
                     check = False
-                    return
+                    return checkbracketfromstack[1] + 1
                 
             if next == "]":
                 stacklenght = len(opening_brackets_stack) - 1
+                if stacklenght < 0:
+                    check = False
+                    return index + 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
-                if checkbracketfromstack == pairsdictionary["]"]:
+                if checkbracketfromstack[0] == pairsdictionary["]"]:
                         opening_brackets_stack.pop(stacklenght)
                         cont = True
                 if cont == False:
                     check = False
-                    return
+                    return checkbracketfromstack[1] + 1
             
             if next == "}":
                 stacklenght = len(opening_brackets_stack) - 1
+                if stacklenght < 0:
+                    check = False
+                    return index + 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
-                if checkbracketfromstack == pairsdictionary["}"]:
+                if checkbracketfromstack[0] == pairsdictionary["}"]:
                         opening_brackets_stack.pop(stacklenght)
                         cont = True
                 if cont == False:
                     check = False
-                    return
+                    return checkbracketfromstack[1] + 1
 
     if len(opening_brackets_stack) == 0: 
         check = True
 
 def main():
-    print("Input text (preferably with brackets): ")
-    text = input()
-    mismatch = find_mismatch(text)
+    print("Manual Input: I, File input: F ")
+    print("Select input type:")
+    inputtype = input()
+    if inputtype == "I":
+        print("Input text (preferably with brackets): ")
+        text = input()
+        result = find_mismatch(text)
+    elif inputtype == "F":
+        print("Input file (location, name and type): ")
+        filepath = input()
+        file = open(filepath, "r")
+        text = file.read()
+        result = find_mismatch(text)
+    
+    
     # Printing answer ---------------------
     if check == True:
         print("Success")
     else:
-        print("Unmatched brackets")
+        if len(opening_brackets_stack) == 0:
+            print(result)
+        else:
+            print(opening_brackets_stack[0][1]+1)
+            
+            
+        #print("Unmatched brackets")
+        
+        
 
 if __name__ == "__main__":
     main()
     
-# Unfinished: Indexing
+# Unfinished: 
+#   Indexing (literal pain)
