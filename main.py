@@ -3,13 +3,15 @@
 
 from collections import namedtuple
 
+Bracket = namedtuple("Bracket", ["char", "position"]) #added this back because the position thing can actually be used
+
 def find_mismatch(text):
     
     opening_brackets_stack = [] #opening brackets are placed in a stack
     
     pairsdictionary = { 
         ")":"(",
-        "]":"[",        #dictionary that provides the asymmetrical opposite to each opening bracket
+        "]":"[",        #dictionary that provides the horizontal opposite to each opening bracket
         "}":"{"
     }
     
@@ -17,11 +19,11 @@ def find_mismatch(text):
     global check        #check will tell us whether brackets are matched
     check = False
     
-    global index        #index will tell us which bracket is unopened or unmatched(not closed)
+    global index        #index will tell us positions and stuff
     for index, next in enumerate(text):
         
         if next in "([{": # Process opening bracket
-            opening_brackets_stack.append(next) #place opening bracket in stack
+            opening_brackets_stack.append(Bracket(next, index)) #place opening bracket in stack
             
         
         if next in ")]}": # Process closing bracket  
@@ -30,7 +32,7 @@ def find_mismatch(text):
             if next == ")":
                 stacklenght = len(opening_brackets_stack) - 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
-                if checkbracketfromstack == pairsdictionary[")"]:
+                if checkbracketfromstack[0] == pairsdictionary[")"]:
                         opening_brackets_stack.pop(stacklenght)
                         cont = True
                 if cont == False:
@@ -40,7 +42,7 @@ def find_mismatch(text):
             if next == "]":
                 stacklenght = len(opening_brackets_stack) - 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
-                if checkbracketfromstack == pairsdictionary["]"]:
+                if checkbracketfromstack[0] == pairsdictionary["]"]:
                         opening_brackets_stack.pop(stacklenght)
                         cont = True
                 if cont == False:
@@ -50,7 +52,7 @@ def find_mismatch(text):
             if next == "}":
                 stacklenght = len(opening_brackets_stack) - 1
                 checkbracketfromstack = opening_brackets_stack[stacklenght]
-                if checkbracketfromstack == pairsdictionary["}"]:
+                if checkbracketfromstack[0] == pairsdictionary["}"]:
                         opening_brackets_stack.pop(stacklenght)
                         cont = True
                 if cont == False:
@@ -80,7 +82,9 @@ def main():
     if check == True:
         print("Success")
     else:
-        print("Unmatched brackets")
+        #print("Unmatched brackets")
+        pass
+        
 
 if __name__ == "__main__":
     main()
