@@ -16,46 +16,76 @@ and for any two pairs of brackets either one of them is nested inside
 another one as in (foo[bar]) or they are separate as in f(a,b)-g[c]. 
 The bracket [ corresponds to the bracket ], { corresponds to }, and ( corresponds to ).
 
- Input contains one string 𝑆 which consists of big and small latin letters, digits, 
- punctuation marks and brackets from the set []{}(). 
+Input contains one string 𝑆 which consists of big and small latin letters, digits, 
+punctuation marks and brackets from the set []{}(). 
  
- Constraints: The length of 𝑆 is at least 1 and at most 105. 
- Output Format: If the code in 𝑆 uses brackets correctly, output “Success" (without the quotes). 
- Otherwise, output the 1-based index of the first unmatched closing bracket,
- if there are no unmatched closing brackets, output the 1-based index of the first unmatched opening bracket.
+Constraints: The length of 𝑆 is at least 1 and at most 105. 
+Output Format: If the code in 𝑆 uses brackets correctly, output “Success" (without the quotes). 
+Otherwise, output the 1-based index of the first unmatched closing bracket,
+if there are no unmatched closing brackets, output the 1-based index of the first unmatched opening bracket.
 """
 
 from collections import namedtuple
 
 '''
-Bracket = namedtuple("Bracket", ["char", "position"]) #kautkāds masīvs laikam
+Bracket = namedtuple("Bracket", ["char", "position"])
 
 
 def are_matching(left, right):
     return (left + right) in ["()", "[]", "{}"] 
 '''
-#not used
+#not used because i uderstood what it does only after figuring out how to do it my way.
+#oops.
 
 
 def find_mismatch(text):
-    opening_brackets_stack = [] #opening brackets are placed here
-    global borat
-    borat = False
+    opening_brackets_stack = [] #opening brackets are placed in a stack
+    pairsdictionary = { 
+        ")":"(",
+        "]":"(",        #dictionary that provides the asymmetrical opposite to each opening bracket
+        "}":"{"
+    }
+    global borat        #borat will tell us whether everything checks out
+    borat = False   
     for i, next in enumerate(text):
+        
         if next in "([{": # Process opening bracket
+            opening_brackets_stack.append(next) #place opening bracket in stack
             
-            opening_brackets_stack.append(next) #ievietoju atvērto iekavu šeit (cerams)
+            
+        if next in ")]}": # Process closing bracket  
+            if next == ")":
+                for j, next in enumerate(reversed(opening_brackets_stack)): 
+                    checkbracketfromstack = opening_brackets_stack[j]
+                    if checkbracketfromstack == pairsdictionary[")"]:
+                        opening_brackets_stack.pop(j)
+                        break
+                    borat = False
+                    return
+                    
+            
+            elif next == "]":
+                for j, next in enumerate(reversed(opening_brackets_stack)): 
+                    checkbracketfromstack = opening_brackets_stack[j]
+                    if checkbracketfromstack == pairsdictionary["]"]:
+                        opening_brackets_stack.pop(j)
+                        break
+                    borat = False
+                    return
+                    
 
-        if next in ")]}": # Process closing bracket
-            stacksize = len(opening_brackets_stack) #get stack size
-            for j, next in enumerate(reversed(opening_brackets_stack)): #bug fixed (wrong type of indices)
-                active = opening_brackets_stack[j]
-                if next == active:
-                    opening_brackets_stack.pop(j)
-                    break
+            elif next == "}":
+                for j, next in enumerate(reversed(opening_brackets_stack)): 
+                    checkbracketfromstack = opening_brackets_stack[j]
+                    if checkbracketfromstack == pairsdictionary["}"]:
+                        opening_brackets_stack.pop(j)
+                        break
+                    borat = False
+                    return
+
     if len(opening_brackets_stack) == 0: 
         borat = True
-        
+
 
 
 def main():
