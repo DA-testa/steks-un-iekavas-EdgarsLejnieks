@@ -68,7 +68,9 @@ def main():
     if check == True:
         print("Success")
     else:
-        print(index+1)
+        print("Unmatched brackets")
 
 if __name__ == "__main__":
     main()
+    
+# Unfinished: Indexing
